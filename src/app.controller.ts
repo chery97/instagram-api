@@ -6,7 +6,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
+  getHello (): string {
+    console.log('kaka')
     return this.appService.getHello();
   }
 }
