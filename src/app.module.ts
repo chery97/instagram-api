@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BoardModule } from './board/board.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BoardTest } from './board/entities/board.entity';
+import { FeedModule } from './feed/feed.module';
 
 @Module({
   imports: [
@@ -13,9 +13,10 @@ import { BoardTest } from './board/entities/board.entity';
       username: 'geekstudio_dev',
       password: 'Geek@2020',
       database: 'geek_custom_dev',
-      entities: [BoardTest],
+      autoLoadEntities: true,
       synchronize: false,
     }),
+    FeedModule,
   ],
   controllers: [],
   providers: [],
