@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { BoardModule } from './board/board.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FeedModule } from './feed/feed.module';
+
+import { PostModule } from './main/post.module';
 
 @Module({
   imports: [
-    BoardModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: '13.124.183.154',
@@ -15,8 +14,9 @@ import { FeedModule } from './feed/feed.module';
       database: 'geek_custom_dev',
       autoLoadEntities: true,
       synchronize: false,
+      charset: 'utf8mb4_unicode_ci',
     }),
-    FeedModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],

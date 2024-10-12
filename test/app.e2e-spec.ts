@@ -25,23 +25,23 @@
 
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { BoardModule } from 'src/board/board.module';
+import { PostModule } from 'src/main/post.module';
 import * as request from 'supertest';
 
-describe('BoardController (e2e)', () => {
-  let board: INestApplication;
+describe('PostController (e2e)', () => {
+  let post: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [BoardModule],
+      imports: [PostModule],
     }).compile();
 
-    board = moduleFixture.createNestApplication();
-    await board.init();
+    post = moduleFixture.createNestApplication();
+    await post.init();
   });
 
   it('/ (GET)', () => {
-    return request(board.getHttpServer())
+    return request(post.getHttpServer())
       .get('/')
       .expect(200)
       .expect('Hello World!');
