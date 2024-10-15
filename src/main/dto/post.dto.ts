@@ -7,6 +7,23 @@ import {
   IsString,
 } from 'class-validator';
 
+import { CommentDto } from '../comment/dto/comment.dto';
+
+export class ImageUrlDto {
+  @ApiProperty({
+    description: '이미지 타입',
+    example: 'IMAGE_URL',
+  })
+  @IsString()
+  type: string;
+
+  @ApiProperty({
+    description: '이미지 URL',
+    example: '//shopby-images.cdn-nhncommerce.com/SERVICE/20191212/XYkrzmG.jpg',
+  })
+  @IsString()
+  url: string;
+}
 export class PostDto {
   @ApiProperty({ description: '게시글 id', example: '1' })
   @IsNumber()
@@ -37,10 +54,20 @@ export class PostDto {
 
   @ApiProperty({
     description: '이미지나 비디오 URL',
-    example: 'http://example.com/image.jpg',
+    type: [ImageUrlDto],
+    example: [
+      {
+        type: 'IMAGE_URL',
+        url: '//shopby-images.cdn-nhncommerce.com/SERVICE/20191212/XYkrzmG.jpg',
+      },
+      {
+        type: 'IMAGE_URL',
+        url: '//shopby-images.cdn-nhncommerce.com/SERVICE/20191213/XYkrzmH.jpg',
+      },
+    ],
   })
   @IsArray()
-  imageUrls: string[];
+  imageUrls: ImageUrlDto[];
 
   @ApiProperty({
     description: '좋아요 수',
@@ -76,11 +103,29 @@ export class PostDto {
 
   @ApiProperty({
     description: '댓글 목록',
-    example: '[댓글1, 댓글2, ...]',
+    type: [CommentDto],
+    example: [
+      {
+        id: 1,
+        postId: 1,
+        userNo: 1,
+        content: 'This is a test comment.',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+      },
+      {
+        id: 2,
+        postId: 1,
+        userNo: 2,
+        content: 'This is another test comment.',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-01T00:00:00Z',
+      },
+    ],
   })
   @IsOptional()
   @IsArray()
-  comments?: string[];
+  comments?: { userNo: number; content: string }[];
 
   @ApiProperty({
     description: '게시글 생성일',

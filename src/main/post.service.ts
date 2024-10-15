@@ -18,11 +18,11 @@ export class PostService {
 
   async create(createDto: PostDto): Promise<PostEntity> {
     try {
-      const post = this.postRepository.create(createDto);
-      return await this.postRepository.save(post);
+      const postEntity = this.postRepository.create(createDto);
+
+      return await this.postRepository.save(postEntity);
     } catch (error) {
-      console.error('Error creating post:', error);
-      throw new InternalServerErrorException('Error creating post');
+      throw new InternalServerErrorException('게시글 생성에 실패했습니다.');
     }
   }
 
@@ -33,11 +33,10 @@ export class PostService {
         throw new NotFoundException('게시글을 찾을 수 없습니다.');
       }
 
-      post.isCommentDisabled = isCommentDisabled; // Assuming this property exists in PostEntity
+      post.isCommentDisabled = isCommentDisabled;
       return await this.postRepository.save(post);
     } catch (error) {
-      console.error('Error updating post status:', error);
-      throw new InternalServerErrorException('Error updating post status');
+      throw new InternalServerErrorException('게시글 수정에 실패했습니다.');
     }
   }
 
@@ -48,30 +47,28 @@ export class PostService {
         throw new NotFoundException('게시글을 찾을 수 없습니다.');
       }
     } catch (error) {
-      console.error('Error deleting post:', error);
-      throw new InternalServerErrorException('Error deleting post');
+      throw new InternalServerErrorException('게시글 삭제에 실패했습니다.');
     }
   }
 
   async getAllPosts(): Promise<PostEntity[]> {
-    try {
-      return await this.postRepository.find();
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      throw new InternalServerErrorException('Error fetching posts');
-    }
+    const posts = await this.postRepository.find({
+      relations: ['comments'],
+    });
+
+    return posts;
   }
 
   async getPostById(id: number): Promise<PostEntity> {
-    try {
-      const post = await this.postRepository.findOne({ where: { userNo: id } });
-      if (!post) {
-        throw new NotFoundException('게시글을 찾을 수 없습니다.');
-      }
-      return post;
-    } catch (error) {
-      console.error('Error fetching post by ID:', error);
-      throw new InternalServerErrorException('Error fetching post by ID');
+    const post = await this.postRepository.findOne({
+      where: { postId: id },
+      relations: ['comments'],
+    });
+
+    if (!post) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
+
+    return post;
   }
 }

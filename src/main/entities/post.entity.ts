@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
+import { CommentEntity } from '../comment/entities/comment.entity';
 
 @Entity('study_post')
 export class PostEntity {
@@ -23,8 +26,8 @@ export class PostEntity {
   @Column({ nullable: true })
   userProfileImage?: string; // 사용자 프로필 이미지 URL
 
-  @Column('simple-array')
-  imageUrls: string[]; // 이미지나 비디오 URL 목록
+  @Column({ type: 'json', nullable: true })
+  imageUrls: { type: string; url: string }[]; // 이미지나 비디오 URL 목록
 
   @Column({ default: 0 })
   likeCount: number; // 좋아요 수
@@ -38,8 +41,8 @@ export class PostEntity {
   @Column({ default: false })
   isCommentDisabled: boolean; // 댓글 기능 제한 여부 (기본값 false)
 
-  @Column('simple-array', { nullable: true })
-  comments?: string[]; // 댓글 목록
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  comments: CommentEntity[]; // 댓글 리스트
 
   @CreateDateColumn()
   createdAt: Date; // 게시글 생성일
