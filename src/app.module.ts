@@ -7,11 +7,11 @@ import { PostModule } from './main/post.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '13.124.183.154',
+      host: 'geek-custom-db-dev.c6nwyvdix4ge.ap-northeast-2.rds.amazonaws.com',
       port: 3306,
-      username: 'geekstudio_dev',
-      password: 'Geek@2020',
-      database: 'geek_custom_dev',
+      username: 'geekstudio',
+      password: 'Geek2020!!',
+      database: 'geek-custom-db-dev',
       autoLoadEntities: true,
       synchronize: false,
       charset: 'utf8mb4_unicode_ci',
